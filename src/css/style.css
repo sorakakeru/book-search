@@ -1,0 +1,364 @@
+@charset "utf-8";
+
+/* ============================ */
+/* 	reset
+/* ============================ */
+
+body, p, dl, dt, dd, h1, h2, h3, h4, h5, h6, ul, ol, li, hr, form, input, textarea, button, select {
+  margin: 0;
+  padding: 0;
+}
+
+em {
+  font-style: normal;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+/* ============================ */
+/* 	base
+/* ============================ */
+
+:root {
+  --baseColor: #1a1a19;
+  --primaryColor: #6fa4af;
+  --bgColor: #fefefe;
+  --whiteColor: #fefefe;
+  --grayColor: #999;
+  --grayBgColor: #f5f5f5;
+  --attentionColor: #d97d55;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--baseColor);
+  font-size: 1rem;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  line-height: 1.6;
+  background-color: var(--bgColor);
+}
+
+img,
+picture * {
+  vertical-align: middle;
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, h4, h5, h6, strong, b {
+  font-weight: 700;
+}
+
+hr {
+  margin-block: 2em;
+  border: none;
+  border-top: 1px solid var(--baseColor);
+  height: 0;
+}
+
+@media screen and (max-width: 599px) {
+  .pc {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .sp {
+    display: none;
+  }
+}
+
+
+/* ============================ */
+/* 	link
+/* ============================ */
+
+a {
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+a:link,
+a:visited {
+  color: var(--primaryColor);
+  text-decoration: underline;
+}
+
+a:hover,
+a:active {
+  color: var(--baseColor);
+  text-decoration: none;
+}
+
+
+/* ============================ */
+/* 	contents
+/* ============================ */
+
+.wrapper {
+  margin: 3em auto;
+  width: min(90%, 800px);
+}
+
+h1 {
+  margin-bottom: 0.5em;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+h1 + p {
+  margin-bottom: 2.5em;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 1em;
+  font-size: 1.35em;
+}
+
+h3 {
+  margin-bottom: 0.5em;
+  font-size: 1.15em;
+}
+
+.book_list {
+  margin: 0 0 2.5em 1.5em;
+}
+
+.book_list li:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.book_list mark {
+  font-weight: 700;
+  background-color: transparent;
+}
+
+.book_list button {
+  color: var(--primaryColor);
+}
+.book_list button:hover {
+  color: var(--base);
+  text-decoration: none;
+}
+.book_list button::before {
+  content: '（';
+  color: var(--baseColor);
+}
+.book_list button::after {
+  content: '）';
+  color: var(--baseColor);
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navigation ol {
+  margin-inline: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.navigation ol li {
+  margin-inline: 0.5em;
+  list-style: none;
+}
+
+.navigation ol li a,
+.navigation ol li .current {
+  font-size: 0.85em;
+  line-height: 1;
+  text-decoration: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navigation ol li a {
+  color: var(--whiteColor);
+  background-color: var(--primaryColor);
+}
+
+.navigation ol li a:hover,
+.navigation ol li .current {
+  color: var(--primaryColor);
+  background-color: var(--grayBgColor);
+}
+
+
+/** .form_area */
+.form_area button {
+  padding: 0.25em 0.75em;
+  color: var(--whiteColor);
+  text-align: center;
+  background-color: var(--baseColor);
+  border-radius: 5px;
+  width: 80px;
+}
+.form_area button:hover {
+  background-color: var(--primaryColor);
+}
+
+.form_area.search form {
+  margin-inline: auto;
+  width: min(100%, 400px);
+  display: flex;
+  align-items: center;
+}
+
+.form_area.search input {
+  width: calc(100% - 0.5em - 80px);
+}
+
+.form_area.search button {
+  margin-left: 0.5em;
+}
+
+.form_area.search + p {
+  margin-top: 1em;
+  text-align: center;
+}
+
+.form_area.register form {
+  margin: 2em auto 0;
+}
+
+.form_area.register ul {
+  margin-left: 1.5em;
+}
+
+.form_area.register dl {
+  margin-block: 1.5em;
+  width: min(100%, 400px);
+}
+
+.form_area.register dt strong {
+  color: var(--attentionColor);
+}
+
+.form_area.register dd + dt {
+  margin-top: 1.5em;
+}
+
+.form_area.register dd p.error {
+  margin-top: 0.5em;
+  width: 100%;
+}
+
+.form_area.register .btn_area {
+  margin-top: 1.5em;
+}
+
+.form_area.register + p.error {
+  margin-top: 1.5em;
+}
+
+p.error {
+  color: var(--attentionColor);
+  font-weight: 700;
+}
+
+p.success {
+  padding: 1em 0.5em;
+  color: var(--whiteColor);
+  font-weight: 700;
+  text-align: center;
+  background-color: var(--primaryColor);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  animation: 3s fadeOut;
+  pointer-events: none;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+/* ============================ */
+/* 	form
+/* ============================ */
+
+input, textarea, button, select {
+  color: var(--baseColor);
+  font-size: 1rem;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  line-height: 1.6;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  appearance: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--grayColor);
+}
+
+input:not([type="checkbox"]):not([type="file"]) {
+  padding: 0.25em;
+  border: 1px solid var(--baseColor);
+  border-radius: 5px;
+  width: 100%;
+}
+
+input[type="file"] {
+  padding: 0.5em;
+  font-size: 0.9em;
+  background-color: var(--grayBgColor);
+  width: min(100%, 400px);
+}
+
+input[type="file"]::file-selector-button {
+  padding: 0.25em 0.5em;
+  color: var(--whiteColor);
+  background-color: var(--baseColor);
+  border: none;
+  border-radius: 5px;
+}
+input[type="file"]:hover::file-selector-button {
+  background-color: var(--primaryColor);
+}
+
+input[type="checkbox"] {
+  margin-right: 0.5em;
+  border: 1px solid var(--baseColor);
+  width: 1em;
+  height: 1em;
+  position: relative;
+  appearance: none;
+}
+
+input[type="checkbox"]:checked {
+  border: 1px solid var(--primaryColor);
+  background-color: var(--primaryColor);
+}
+
+button {
+  transition: all 0.3s;
+  cursor: pointer;
+}
