@@ -8,6 +8,8 @@
    * https://github.com/sorakakeru/book-search/blob/main/LICENSE
    */
   
+  session_start();
+  
 	//include
 	require_once __DIR__. '/fnc_inc/config.php';
 	require_once __DIR__. '/fnc_inc/functions.php';

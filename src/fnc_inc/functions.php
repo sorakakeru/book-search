@@ -10,12 +10,13 @@
   
   //CSRFトークン生成
   function generate_token() {
-    return hash('sha256', session_id());
+    return bin2hex(random_bytes(32));
   }
 
   //CSRFトークン検証
   function validate_token($token) {
-    return $token === generate_token();
+    //送信されてきた$tokenが生成したハッシュと一致するか
+    return isset($_SESSION['token']) && hash_equals($_SESSION['token'], $token);
   }
 
   //XSS対策

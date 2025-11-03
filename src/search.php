@@ -8,13 +8,17 @@
    * https://github.com/sorakakeru/book-search/blob/main/LICENSE
    */
   
+  session_start();
+  
 	//include
 	require_once __DIR__. '/fnc_inc/config.php';
 	require_once __DIR__. '/fnc_inc/functions.php';
-
+    
   //token
-  $token = h(generate_token());
-  $_SESSION['token'] = $token;
+  if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = generate_token();
+  }
+  $token = h($_SESSION['token']);
 ?>
 
 <?php include_once __DIR__. '/tmpl/header.html'; ?>
