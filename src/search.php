@@ -52,6 +52,9 @@
 
     if (!empty($data)) {
 
+      //$data逆順に
+      $data = array_reverse($data);
+
       //検索単語フィルタリング
       $search = isset($_GET['search']) && is_string($_GET['search']) ? mb_substr($_GET['search'], 0, 100) : '';
       $result = array_filter($data, function($f) use ($search) {
