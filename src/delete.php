@@ -6,16 +6,19 @@
    * Copyright (c) 2025 Yamatsu
    * Released under the MIT license
    * https://github.com/sorakakeru/book-search/blob/main/LICENSE
+   * 
+   * This script uses the Twig template engine (BSD-3-Clause License).
+   * For details about Twig's license, please refer to LICENSE_TWIG.
    */
   
   session_start();
   
 	//include
-	require_once __DIR__. '/fnc_inc/config.php';
-	require_once __DIR__. '/fnc_inc/functions.php';
+	require_once __DIR__. '/_modules/fnc_inc/config.php';
+	require_once __DIR__. '/_modules/fnc_inc/functions.php';
 ?>
 
-<?php include_once __DIR__. '/tmpl/header.html'; ?>
+<?php include_once __DIR__. '/_modules/tmpl/header.html'; ?>
 
 <?php
 
@@ -72,6 +75,6 @@
 
   <hr>
 
-	<?php include_once __DIR__. '/tmpl/search.html'; ?>
+	<?php include_once __DIR__. '/_modules/tmpl/search.html'; ?>
 
-<?php include_once __DIR__. '/tmpl/footer.html'; ?>
+<?php include_once __DIR__. '/_modules/tmpl/footer.html'; ?>
