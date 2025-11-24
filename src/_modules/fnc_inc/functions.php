@@ -46,11 +46,4 @@
     ];
   }
 
-  /*
-  //XSS対策
-  function h($str) {
-    return htmlspecialchars($str, ENT_NOQUOTES, 'UTF-8');
-  }
-  */
-
 ?>
