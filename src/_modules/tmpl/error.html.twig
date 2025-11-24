@@ -1,0 +1,7 @@
+{% if error %}
+  <ul class="error">
+    {% for msg in error %}
+      <li>{{ msg }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}

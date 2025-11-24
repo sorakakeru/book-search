@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+
+  {# logFileExistsチェック #}
+  {% if not logFileExists %}
+    <p class="error">データ保存用jsonファイルがありません</p>
+  {% else %}
+
+    {# dataExistsチェック #}
+    {% if not dataExists %}
+      <p>蔵書はまだ登録されていません</p>
+    {% else %}
+      
+      {% if books|length > 0 %}
+
+        {%if searchWord == '' %}
+          <p>蔵書一覧（<strong>{{ resultTotal }}冊</strong> / 電子書籍{{ resultEbook }}冊を含む）</p>
+        {% else %}
+          <p><strong>「{{ searchWord }}」</strong>を検索した結果、<strong>{{ resultTotal }}冊</strong>{%if resultEbook > 0 %}（電子書籍{{ resultEbook }}冊を含む）{% endif %}見つかりました</p>
+        {% endif %}
+
+        <hr>
+
+        <ul class="book_list">
+          {% for book in books %}
+            <li>
+              <form action="./delete.php" method="post">
+                <input type="hidden" name="token" value="{{ token }}">
+                <input type="hidden" name="id" value="{{ book.id }}">
+                <input type="hidden" name="title" value="{{ book.title }}">
+                <mark>{{ book.title }}</mark>{%if book.ebook %}　※電子書籍{% endif %}<button type="submit" name="delete" onclick="return confirm('削除する？');">削除</button><br>
+                {{ book.author }}{% if book.author and book.publisher%}｜{% endif %}{{ book.publisher }}
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {# ページネーション #}
+        <nav class="navigation">
+          {% if pager > 1 %}
+            <div class="nav prev"><a href="./search.php?search={{ searchWord }}&page={{ pager - 1 }}">←</a></div>
+          {% endif %}
+          <ol>
+            {% if pager > 3 %}
+              <li><a href="./search.php?search={{ searchWord }}&page=1">1</a></li>
+              <li>...</li>
+            {% endif %}
+
+            {% for p in (pager - 2)..(pager + 2) %}
+              {% if p > 0 and p <= totalPages %}
+                <li>
+                  {% if p == pager %}
+                    <span class="current">{{ p }}</span>
+                  {% else %}
+                    <a href="./search.php?search={{ searchWord }}&page={{ p }}">{{ p }}</a>
+                  {% endif %}
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if pager < totalPages - 2 %}
+              <li>...</li>
+              <li><a href="./search.php?search={{ searchWord }}&page={{ totalPages }}">{{ totalPages }}</a></li>
+            {% endif %}
+
+          </ol>
+          {% if pager < totalPages %}
+            <div class="nav next"><a href="./search.php?search={{ searchWord }}&page={{ pager + 1 }}">→</a></div>
+          {% endif %}
+        </nav>
+      
+      {% else %}
+        <p>「{{ searchWord }}」を検索した結果、蔵書は見つかりませんでした</p>
+      {% endif %}
+
+    {% endif %}
+
+  {% endif %}
+
+  <hr>
+
+  {{ include('searchForm.html.twig') }}
+
+{% endblock %}

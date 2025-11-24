@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+
+  {# logFileExistsチェック #}
+  {% if not logFileExists %}
+    <p class="error">データ保存用jsonファイルがありません</p>
+  {% else %}
+
+    {{ include('error.html.twig') }}
+
+    {# dataExistsチェック #}
+    {% if not dataExists %}
+      <p>蔵書はまだ登録されていません</p>
+    {% else %}
+
+
+      {% if deleteSuccess %}
+        <p>『{{ deleteTitle }}』の登録データを削除しました</p>
+      {% endif %}
+
+    {% endif %}
+
+  {% endif %}
+
+  <hr>
+
+  {{ include('searchForm.html.twig') }}
+
+{% endblock %}

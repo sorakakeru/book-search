@@ -12,69 +12,80 @@
    */
   
   session_start();
+
+  //Twig
+  require_once __DIR__. '/_modules/vendor/autoload.php';
+  $loader = new \Twig\Loader\FilesystemLoader(__DIR__. '/_modules/tmpl');
+  $twig = new \Twig\Environment($loader, []);
+  $template = $twig->load('delete.html.twig');
   
 	//include
 	require_once __DIR__. '/_modules/fnc_inc/config.php';
 	require_once __DIR__. '/_modules/fnc_inc/functions.php';
-?>
 
-<?php include_once __DIR__. '/_modules/tmpl/header.html'; ?>
 
-<?php
+  //default
+  $validateToken = false;
+  $deleteTitle = isset($_POST['title']) ? $_POST['title'] : '';
+  $deleteSuccess = false;
+  $error = [];
 
-  if (!file_exists($log_file)) { //$log_fileファイルの存在チェック
-    errorMsg('データ保存用jsonファイルを作成してください');
-  } else {
 
-    //token確認
-    if (!validate_token($_POST['token'])) {
-      errorMsg('不正な操作を検出したため登録できませんでした');
+  //ファイルの存在チェック
+  $logFileExists = file_exists($log_file);
 
-    } else {
-      //jsonファイル読み込み
-      $data = json_decode(file_get_contents($log_file), true) ?: [];
+  if ($logFileExists) {
+    //jsonファイル読み込み
+    $data = loadBooks($log_file);
 
-      if (!empty($data)) {
+    //データの存在チェック
+    $dataExists = !empty($data);
 
+    //処理
+    if ($dataExists) {
+      //token確認
+      $token = isset($_POST['token']) ? $_POST['token'] : '';
+      $validateToken = validate_token($token);
+
+      if (!$validateToken) {
+        $error[] = '不正な操作を検出したため削除できませんでした';
+      } else {
         //IDを取得
-        $id = isset($_POST['id']) ? (int)$_POST['id'] : '';
+        $id = isset($_POST['id']) ? (int)$_POST['id'] : null;
+        $idExists = !empty($id);
 
-        if(empty($id)) {
-          errorMsg('該当IDの蔵書データが見つかりません');
+        if (!$idExists) {
+          $error[] = '該当IDの蔵書データが見つかりません';
         } else {
           //該当IDのデータを取得
           $key = array_search($id , array_column($data, 'id'));
-          if ($key === false) {
-            errorMsg('該当IDの蔵書データが見つかりません');
-          } else {  
-            //削除表示
-            echo '<p>『' .h($data[$key]['title']). '』の登録データを削除しました</p>' ."\n";
 
+          if ($key === false) {
+            $error[] = '該当IDの蔵書データが見つかりません';
+          } else {
             //データ削除
             unset($data[$key]);
             $data = array_values($data);
 
             //ファイル書き込み
-            if (file_put_contents($log_file, json_encode($data, JSON_UNESCAPED_UNICODE), LOCK_EX) === false) {
-              errorMsg('Error: 送信内容の保存に失敗しました');
-            }
-
+            $deleteSuccess = file_put_contents($log_file, json_encode($data, JSON_UNESCAPED_UNICODE), LOCK_EX) !== false;
           }
-
         }
 
-      } else {
-        errorMsg('蔵書はまだ登録されていません');
       }
 
     }
-    
+
   }
 
+  // Twigに渡してレンダリング
+  echo $template->render([
+    'title' => $title,
+    'validateToken' => $validateToken,
+    'logFileExists' => $logFileExists,
+    'dataExists' => $dataExists,
+    'deleteTitle' => $deleteTitle,
+    'deleteSuccess' => $deleteSuccess,
+    'error' => $error
+  ]);
 ?>
-
-  <hr>
-
-	<?php include_once __DIR__. '/_modules/tmpl/search.html'; ?>
-
-<?php include_once __DIR__. '/_modules/tmpl/footer.html'; ?>

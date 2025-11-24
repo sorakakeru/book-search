@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+
+  {{ include('searchForm.html.twig') }}
+
+  {# logFileExistsチェック #}
+  {% if not logFileExists %}
+    <p class="error">データ保存用jsonファイルがありません</p>
+  {% else %}
+
+    {# dataExistsチェック #}
+    {% if not dataExists %}
+      <p>蔵書はまだ登録されていません</p>
+    {% else %}
+      <p>蔵書数：{{ total }}冊（電子書籍{{ totalEbook }}冊を含む）</p>
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

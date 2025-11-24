@@ -10,34 +10,49 @@
    * This script uses the Twig template engine (BSD-3-Clause License).
    * For details about Twig's license, please refer to LICENSE_TWIG.
    */
+
+  //Twig
+  require_once __DIR__. '/_modules/vendor/autoload.php';
+  $loader = new \Twig\Loader\FilesystemLoader(__DIR__. '/_modules/tmpl');
+  $twig = new \Twig\Environment($loader, []);
+  $template = $twig->load('index.html.twig');
   
 	//include
 	require_once __DIR__. '/_modules/fnc_inc/config.php';
 	require_once __DIR__. '/_modules/fnc_inc/functions.php';
-?>
 
-<?php include_once __DIR__. '/_modules/tmpl/header.html'; ?>
 
-  <?php include_once __DIR__. '/_modules/tmpl/search.html'; ?>
+  //ファイルの存在チェック
+  $logFileExists = file_exists($log_file);
 
-  <?php
-    if (!file_exists($log_file)) { //$log_fileファイルの存在チェック
-      errorMsg('データ保存用jsonファイルを作成してください');
+  if ($logFileExists) {
+    //jsonファイル読み込み
+    $data = loadBooks($log_file);
+
+    //データの存在チェック
+    $dataExists = !empty($data);
+    
+    //処理
+    if ($dataExists) {
+      $total = count($data); //全冊数
+      $total_ebook = count(array_filter($data, fn($b) => !empty($b['ebook']))); //電子書籍数
     } else {
-
-      //jsonファイル読み込み
-      $data = json_decode(file_get_contents($log_file), true) ?: [];
-
-      if (!empty($data)) {
-        $total = count($data); //全冊数
-        $total_ebook = count(array_keys(array_column($data, 'ebook'), true)); //電子書籍数
-
-        echo '<p>蔵書数：' .$total. '冊（電子書籍' .$total_ebook. '冊を含む）</p>';
-      } else {
-        echo '<p>蔵書はまだ登録されていません</p>';
-      }
-
+      $total = 0;
+      $total_ebook = 0;
     }
-  ?>
+    
+  } else {
+    $dataExists = false;
+    $total = 0;
+    $total_ebook = 0;
+  }
 
-<?php include_once __DIR__. '/_modules/tmpl/footer.html'; ?>
+  // Twigに渡してレンダリング
+  echo $template->render([
+    'title' => $title,
+    'logFileExists' => $logFileExists,
+    'dataExists' => $dataExists,
+    'total' => $total,
+    'totalEbook' => $total_ebook
+  ]);
+?>

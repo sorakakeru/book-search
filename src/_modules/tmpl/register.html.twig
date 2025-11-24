@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block javascript %}<script src="./js/lib.js" defer></script>{% endblock %}
+
+{% block main %}
+
+  {# logFileExistsチェック #}
+  {% if not logFileExists %}
+    <p class="error">データ保存用jsonファイルがありません</p>
+  {% else %}
+
+    <div class="form_area register">
+
+      <h2>蔵書登録</h2>
+      <p>一括登録する場合はCSVファイルを指定、1冊ずつ登録する場合はテキストフォームに入力してください</p>
+
+      {{ include('error.html.twig') }}
+
+      {% if addSuccess %}
+        <p class="success">蔵書登録を完了しました</p>
+      {% endif %}
+
+      <form action="./register.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="token" value="{{ token }}">
+        
+        <h3>CSV Import</h3>
+        <p>1MBファイルまでアップロードできます</p>
+        <p><input type="file" name="csv_file" id="csv_file" accept=".csv"></p>
+
+        <hr>
+
+        <h3>手入力で登録する</h3>
+        <ul>
+          <li>CSVファイルがセットされている場合は、CSVファイルでの登録が優先されます</li>
+          <li>タイトルは入力必須です</li>
+          <li>電子書籍にチェックが入っていない場合はISBNコードの入力必須です</li>
+          <li>ISBNコードが未入力の場合は、登録時に13桁の0の数字が代入されます</li>
+          <li>タイトル・著者・出版社はそれぞれ255文字までしか登録されません</li>
+        </ul>
+
+        <dl>
+          <dt><label for="isbn">ISBNコード（数字13桁）</label></dt>
+          <dd><input type="text" name="isbn" id="isbn" placeholder="9784..."></dd>
+          <dt><label for="title">タイトル <strong title="必須入力">*</strong></label></dt>
+          <dd><input type="text" name="title" id="title"></dd>
+          <dt><label for="author">著者</label></dt>
+          <dd><input type="text" name="author" id="author"></dd>
+          <dt><label for="publisher">出版社</label></dt>
+          <dd><input type="text" name="publisher" id="publisher"></dd>
+        </dl>
+
+        <p><label for="ebook"><input type="checkbox" name="ebook" id="ebook">電子書籍の場合はチェック</label></p>
+
+        <div class="btn_area">
+          <button type="submit" name="import">登録</button>
+        </div>
+      </form>
+
+    </div>
+
+  {% endif %}
+
+{% endblock %}

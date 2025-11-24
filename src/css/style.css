@@ -277,6 +277,12 @@ p.error {
   font-weight: 700;
 }
 
+ul.error {
+  margin: 1.5em 0 1.5em 1.5em;
+  color: var(--attentionColor);
+  font-weight: 700;
+}
+
 p.success {
   padding: 1em 0.5em;
   color: var(--whiteColor);

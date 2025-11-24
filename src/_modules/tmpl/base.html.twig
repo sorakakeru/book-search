@@ -6,12 +6,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="format-detection" content="telephone=no">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>book search</title>
+<title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" href="./css/style.css">
+{% block javascript %}{% endblock %}
 </head>
 <body>
 
 <div class="wrapper">
 
-	<h1><a href="./">book search</a></h1>
+	<h1><a href="./">{{ block('title') }}</a></h1>
   <p><a href="./register.php">蔵書登録</a></p>
+
+  {% block main %}{% endblock %}
+
+</div>
+
+</body>
+</html>
