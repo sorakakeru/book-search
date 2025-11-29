@@ -5,6 +5,9 @@
  * Copyright (c) 2025 Yamatsu
  * Released under the MIT license
  * https://github.com/sorakakeru/book-search/blob/main/LICENSE
+ * 
+ * This script uses the Twig template engine (BSD-3-Clause License).
+ * For details about Twig's license, please refer to LICENSE_TWIG.
  */
 
 const form = document.querySelector('.form_area.register form')
