@@ -20,6 +20,10 @@
 	//include
 	require_once __DIR__. '/_modules/fnc_inc/config.php';
 	require_once __DIR__. '/_modules/fnc_inc/functions.php';
+  
+  //default
+  $total = 0;
+  $total_ebook = 0;
 
 
   //ファイルの存在チェック
@@ -36,15 +40,8 @@
     if ($dataExists) {
       $total = count($data); //全冊数
       $total_ebook = count(array_filter($data, fn($b) => !empty($b['ebook']))); //電子書籍数
-    } else {
-      $total = 0;
-      $total_ebook = 0;
     }
     
-  } else {
-    $dataExists = false;
-    $total = 0;
-    $total_ebook = 0;
   }
 
   // Twigに渡してレンダリング

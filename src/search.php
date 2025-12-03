@@ -23,6 +23,17 @@
 	require_once __DIR__. '/_modules/fnc_inc/config.php';
 	require_once __DIR__. '/_modules/fnc_inc/functions.php';
 
+
+  //default
+  $token = '';
+  $search_word = '';
+  $books = [];
+  $result = [];
+  $total = 0;
+  $result_ebook = 0;
+  $pager = 1;
+  $total_pages = 1;
+  
   
   //ファイルの存在チェック
   $logFileExists = file_exists($log_file);
@@ -52,11 +63,6 @@
       });
       $result = array_values($result); //index振り直し
       $result_ebook = count(array_filter($result, fn($b) => !empty($b['ebook']))); //電子書籍数
-    } else {
-      $token = '';
-      $search_word = '';
-      $result = [];
-      $result_ebook = 0;
     }
 
     //ページャー設定
@@ -66,15 +72,6 @@
     $start_page = ($pager - 1) * $page;
     $books = array_slice($result, $start_page, $page, true);
     
-  } else {
-    $token = '';
-    $dataExists = false;
-    $search_word = '';
-    $books = [];
-    $total = 0;
-    $result_ebook = 0;
-    $pager = 1;
-    $total_pages = 1;
   }
 
   // Twigに渡してレンダリング
