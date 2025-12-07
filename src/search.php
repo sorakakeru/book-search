@@ -59,7 +59,7 @@
       //検索単語フィルタリング
       $search_word = isset($_GET['search']) && is_string($_GET['search']) ? mb_substr($_GET['search'], 0, 100) : '';
       $result = array_filter($data, function($f) use ($search_word) {
-        return (strpos($f['title'], $search_word) !== false || strpos($f['author'], $search_word) !== false || strpos($f['publisher'], $search_word) !== false);
+        return (mb_stripos($f['title'], $search_word) !== false || mb_stripos($f['author'], $search_word) !== false || mb_stripos($f['publisher'], $search_word) !== false);
       });
       $result = array_values($result); //index振り直し
       $result_ebook = count(array_filter($result, fn($b) => !empty($b['ebook']))); //電子書籍数
